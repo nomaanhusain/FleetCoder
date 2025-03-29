@@ -1,0 +1,90 @@
+{
+  "name": "fleet-coder",
+  "displayName": "Fleet Coder",
+  "description": "This extension allows you to copy code to multiple machines at the same time",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.98.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "fleet-coder.syncCode",
+        "title": "Sync Code"
+      },
+      {
+        "command": "fleet-coder.launchFleet",
+        "title": "ROS Launch"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "fleet-coder.syncCode",
+          "when": "editorTextFocus",
+          "group": "navigation"
+        },
+        {
+          "command": "fleet-coder.launchFleet",
+          "when": "editorTextFocus",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration":{
+      "title": "Fleet Coder Settings",
+      "properties": {
+        "fleet-coder.IPs": {
+          "type": "string",
+          "default": "",
+          "description": "Path of the csv (newline seprated) with the IPs of the machines to sync code to."
+        },
+        "fleet-coder.username": {
+          "type": "string",
+          "default": "thymio",
+          "description": "The username of remote to use for SSH connections."
+        },
+        "fleet-coder.password": {
+          "type": "string",
+          "default": "thymio",
+          "description": "The password of remote to use for SSH connections."
+        },
+        "fleet-coder.buildCommand": {
+          "type": "string",
+          "default": "colcon build",
+          "description": "The command to build the code."
+        },
+        "fleet-coder.rosVersionName": {
+          "type": "string",
+          "default": "humble",
+          "description": "Name of the ROS version to source ros before building."
+        }
+
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.98.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^8.28.0",
+    "@typescript-eslint/parser": "^8.28.0",
+    "eslint": "^9.23.0",
+    "typescript": "^5.8.2",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1"
+  }
+}
