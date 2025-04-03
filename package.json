@@ -15,7 +15,15 @@
     "commands": [
       {
         "command": "fleet-coder.syncCode",
-        "title": "Sync Code"
+        "title": "Sync File"
+      },
+      {
+        "command": "fleet-coder.buildWorkspace",
+        "title": "Build Workspace"
+      },
+      {
+        "command": "fleet-coder.syncWorkspace",
+        "title": "Sync Workspace"
       },
       {
         "command": "fleet-coder.launchFleet",
@@ -26,6 +34,16 @@
       "editor/title": [
         {
           "command": "fleet-coder.syncCode",
+          "when": "editorTextFocus",
+          "group": "navigation"
+        },
+        {
+          "command": "fleet-coder.buildWorkspace",
+          "when": "editorTextFocus",
+          "group": "navigation"
+        },
+        {
+          "command": "fleet-coder.syncWorkspace",
           "when": "editorTextFocus",
           "group": "navigation"
         },
@@ -63,6 +81,19 @@
           "type": "string",
           "default": "humble",
           "description": "Name of the ROS version to source ros before building."
+        },
+        "fleet-coder.workspacePath": {
+          "type": "string",
+          "default": "",
+          "description": "Path of your workspace on the remote machines. By default the workspace will be synced in the home folder"
+        },
+        "fleet-coder.excludedFolders": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                },
+                "default": ["build", ".git"],
+                "description": "List of folders to exclude when syncing the workspace."
         }
 
       }

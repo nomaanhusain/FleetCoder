@@ -10,7 +10,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "fleet-coder" is now active!');
+	console.log('Congratulations, your extension "fleet-coder" is now active! Lets see');
 
 
 
@@ -68,6 +68,7 @@ export function activate(context: vscode.ExtensionContext) {
 		console.log(`Your PC file path: ${filePath}`);
 		console.log(`Workspace Name: ${workspaceName}`);
 		console.log(`Workspace Folder: ${workspaceRoot}`);
+		console.log("--------------------------------------");
 		// const csvFile = vscode.workspace.rootPath + "/ips.csv";
 		const csvFile = config.get<string>('IPs') || path.join(workspaceRoot, 'ips.csv');
 		if (!fs.existsSync(csvFile)) {
@@ -83,45 +84,130 @@ export function activate(context: vscode.ExtensionContext) {
 		//Main loop
 		for (const ip of ips) {
 			// vscode.window.showInformationMessage(`Copying to ${ip}...`);
-			console.log(`Copying to ${ip}...`);
+			// console.log(`Copying to ${ip}...`);
 
 			// Construct SCP command
-            const scpCmd = password
-                ? `sshpass -p "${password}" scp -o StrictHostKeyChecking=no "${filePath}" "${username}@${ip}:${destPath}"`
-                : `scp -o StrictHostKeyChecking=no "${filePath}" "${username}@${ip}:${destPath}"`;
+            const scpCmd = `sshpass -p "${password}" scp -o StrictHostKeyChecking=no "${filePath}" "${username}@${ip}:${destPath}"`;
 
 			// TODO: Uncomment below to execute the SCP command 
 			// Execute SCP command compunded with build command
-			// exec(scpCmd, (error, stdout, stderr) => {
-            //     if (error) {
-            //         vscode.window.showErrorMessage(`Failed to copy to ${ip}: ${stderr}`);
-            //         return;
-            //     }
-            //     vscode.window.showInformationMessage(`File copied to ${ip}`);
+			console.log("Command= ",scpCmd)
+			exec(scpCmd, (error, stdout, stderr) => {
+                if (error) {
+                    vscode.window.showErrorMessage(`Failed to copy to ${ip}: ${stderr}`);
+                    return;
+                }
+				if (stderr) {
+					vscode.window.showWarningMessage(`Stderr: ${stderr}`);
+					return;
+				}
+                vscode.window.showInformationMessage(`File copied to ${ip}`);
+				vscode.window.showInformationMessage(`Success: ${stdout}`);
 
-            //     // Construct SSH command to run build
-            //     const sshCmd = password
-            //         ? `sshpass -p "${password}" ssh -o StrictHostKeyChecking=no ${username}@${ip} "cd /home/${username}/${workspaceName} && source /opt/ros/humble/setup.bash && ${buildCommand}"`
-            //         : `ssh -o StrictHostKeyChecking=no ${username}@${ip} "cd /home/${username}/${workspaceName} && source /opt/ros/${rosName}/setup.bash && ${buildCommand}"`;
+                // Construct SSH command to run build
+                // const sshCmd = password
+                //     ? `sshpass -p "${password}" ssh -o StrictHostKeyChecking=no ${username}@${ip} "cd /home/${username}/${workspaceName} && source /opt/ros/humble/setup.bash && ${buildCommand}"`
+                //     : `ssh -o StrictHostKeyChecking=no ${username}@${ip} "cd /home/${username}/${workspaceName} && source /opt/ros/${rosName}/setup.bash && ${buildCommand}"`;
 
-            //     exec(sshCmd, (error, stdout, stderr) => {
-            //         if (error) {
-            //             vscode.window.showErrorMessage(`Build failed on ${ip}: ${stderr}`);
-            //             return;
-            //         }
-            //         vscode.window.showInformationMessage(`Build completed on ${ip}`);
-            //     });
-			// });
+                // exec(sshCmd, (error, stdout, stderr) => {
+                //     if (error) {
+                //         vscode.window.showErrorMessage(`Build failed on ${ip}: ${stderr}`);
+                //         return;
+                //     }
+                //     vscode.window.showInformationMessage(`Build completed on ${ip}`);
+                // });
+			});
 			
 		} //End of for loop
 
 	});
-	let buttonTwo = vscode.commands.registerCommand('fleet-coder.launchFleet', () => {
+	let buildWorkspace = vscode.commands.registerCommand('fleet-coder.buildWorkspace', async () => {
+		const config = vscode.workspace.getConfiguration('fleet-coder');
+		const username = config.get<string>('username') || 'thymio';
+        const password = config.get<string>('password') || 'thymio';
+		const rosName = config.get<string>('rosVersionName') || 'humble';
+        const buildCommand = config.get<string>('buildCommand') || 'colcon build';
+
+		console.log(`Username: ${username}`);
+		console.log(`Password: ${password}`);
+		console.log(`Build command: ${buildCommand}`);
+		console.log(`ROS Name: ${rosName}`);
+
+		// Get workspace folder
+        const workspaceFolders = vscode.workspace.workspaceFolders;
+        if (!workspaceFolders) {
+            vscode.window.showErrorMessage("No workspace detected! Open a workspace first.");
+            return;
+        }
+
+        const workspaceRoot = workspaceFolders[0].uri.fsPath;
+		const workspaceName = path.basename(workspaceRoot);
+		const csvFile = config.get<string>('IPs') || path.join(workspaceRoot, 'ips.csv');
+		if (!fs.existsSync(csvFile)) {
+			vscode.window.showErrorMessage('CSV file not found! Add path to csv with IPs of remote devices in Fleet Coder Settings (\'Ctrl + ,\' search: Fleet Coder)');
+			return;
+		}
+		const ips = fs.readFileSync(csvFile, 'utf-8').split('\n').map(line => line.trim()).filter(line => line);
+        if (ips.length === 0) {
+            vscode.window.showErrorMessage("No IPs found in CSV file!");
+            return;
+        }
+		for (const ip of ips) {
+			const sshCmd = `sshpass -p "${password}" ssh -o StrictHostKeyChecking=no ${username}@${ip} "cd /home/${username}/${workspaceName} && source /opt/ros/humble/setup.bash && ${buildCommand}"`;
+			vscode.window.showInformationMessage(`Building on ${ip}`);
+            exec(sshCmd, (error, stdout, stderr) => {
+                if (error) {
+                    vscode.window.showErrorMessage(`Build failed on ${ip}: ${stderr}`);
+                    return;
+                }
+                vscode.window.showInformationMessage(`Build completed on ${ip}`);
+            });
+		}
+	});
+	let launchFleet = vscode.commands.registerCommand('fleet-coder.launchFleet', () => {
 		vscode.window.showInformationMessage('Will execute ROS launch file on fleet');
+	});
+	let syncWorkspace = vscode.commands.registerCommand('fleet-coder.syncWorkspace', () => {
+		const config = vscode.workspace.getConfiguration('fleet-coder');
+		const username = config.get<string>('username') || 'thymio';
+        const password = config.get<string>('password') || 'thymio';
+		const excludes: string[] = config.get("excludedFolders", []);
+		console.log(excludes);
+    	const excludeParams = excludes.map(folder => `--exclude=${folder}`).join(" ");
+		// Get workspace folder
+        const workspaceFolders = vscode.workspace.workspaceFolders;
+        if (!workspaceFolders) {
+            vscode.window.showErrorMessage("No workspace detected! Open a workspace first.");
+            return;
+        }
+        const workspaceRoot = workspaceFolders[0].uri.fsPath;
+		const csvFile = config.get<string>('IPs') || path.join(workspaceRoot, 'ips.csv');
+		if (!fs.existsSync(csvFile)) {
+			vscode.window.showErrorMessage('CSV file not found! Add path to csv with IPs of remote devices in Fleet Coder Settings (\'Ctrl + ,\' search: Fleet Coder)');
+			return;
+		}
+		const ips = fs.readFileSync(csvFile, 'utf-8').split('\n').map(line => line.trim()).filter(line => line);
+        if (ips.length === 0) {
+            vscode.window.showErrorMessage("No IPs found in CSV file!");
+            return;
+        }
+		const destPath = config.get<string>('workspacePath') || `/home/${username}/`;
+		for (const ip of ips) {
+			const command = `sshpass -p ${password} rsync -av --delete --delete-excluded ${excludeParams} "${workspaceRoot}" ${username}@${ip}:"${destPath}"`;
+			console.log(command);
+			exec(command, (error, stdout, stderr) => {
+				if (error) {
+					vscode.window.showErrorMessage(`Error syncing: ${stderr}`);
+					return;
+				}
+				vscode.window.showInformationMessage("Workspace synced successfully.");
+			});
+		}
+
 	});
 
 
-	context.subscriptions.push(syncCode, buttonTwo);
+	context.subscriptions.push(syncCode, buildWorkspace, syncWorkspace, launchFleet);
 }
 
 // This method is called when your extension is deactivated

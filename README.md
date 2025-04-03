@@ -1,5 +1,11 @@
 # Fleet Coder README
 
+You should have node version **>=14** and vscode version **>1.98.0** to build and run this project.
+```bash
+node -v
+code --verison
+```
+
 This is the README for your extension "fleet-coder". After writing up a brief description, we recommend including the following sections.
 
 ## Features
