@@ -6,7 +6,7 @@ node -v
 code --verison
 ```
 
-This is the README for your extension "fleet-coder". After writing up a brief description, we recommend including the following sections.
+<!-- This is the README for your extension "fleet-coder". After writing up a brief description, we recommend including the following sections.
 
 ## Features
 
@@ -72,6 +72,6 @@ You can author your README using Visual Studio Code. Here are some useful editor
 ## For more information
 
 * [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/) -->
 
 **Enjoy!**
