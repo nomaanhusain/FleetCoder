@@ -56,12 +56,12 @@
         "fleet-coder.username": {
           "type": "string",
           "default": "thymio",
-          "description": "The username of remote to use for SSH connections."
+          "description": "The username of remote machines to use for SSH connections."
         },
         "fleet-coder.password": {
           "type": "string",
           "default": "thymio",
-          "description": "The password of remote to use for SSH connections."
+          "description": "The password of remote machines to use for SSH connections."
         },
         "fleet-coder.buildCommand": {
           "type": "string",
@@ -76,7 +76,7 @@
         "fleet-coder.workspacePath": {
           "type": "string",
           "default": "",
-          "description": "Path of your workspace on the remote machines. By default the workspace will be assumed to be in the home folder (/username/home/)"
+          "description": "Path of your workspace on the remote machines. By default the workspace will be assumed to be in the home folder (/username/home/)."
         },
         "fleet-coder.sourceCommands": {
             "type": "array",
@@ -92,7 +92,17 @@
         "fleet-coder.sourceAfterBuild": {
           "type": "string",
           "default": "source install/setup.sh",
-          "description": "Path to source your new build after calling the build command"
+          "description": "Path to source your new build after calling the build command."
+        },
+        "fleet-coder.launchFileName": {
+          "type": "string",
+          "default": "launch.py",
+          "description": "Name of the launch file to execute. The file should be in the launch folder (.py, .yaml or .xml)."
+        },
+        "fleet-coder.packageName": {
+          "type": "string",
+          "default": "my_ros_package",
+          "description": "Name of the package you want to launch. This lets you define the package for the launch file"
         },
         "fleet-coder.excludedFolders": {
                 "type": "array",
