@@ -3,6 +3,13 @@
   "displayName": "Fleet Coder",
   "description": "This extension allows you to copy code to multiple machines at the same time",
   "version": "0.0.1",
+  "icon": "fleet_coder_logo.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nomaanhusain/FleetCoder.git"
+  },
+  "license":"MIT",
+  "publisher": "codeEngineering",
   "engines": {
     "vscode": "^1.98.0"
   },
@@ -78,17 +85,6 @@
           "default": "",
           "description": "Path of your workspace on the remote machines. By default the workspace will be assumed to be in the home folder (/username/home/)."
         },
-        "fleet-coder.sourceCommands": {
-            "type": "array",
-            "items": {
-              "type": "string"
-          },
-          "default": [
-            "source /opt/ros/humble/setup.bash",
-            "source setup-ros2-discovery.sh"
-          ],
-          "description": "List of shell source commands to run before executing ROS-related commands. They will be executed in order."
-        },
         "fleet-coder.sourceAfterBuild": {
           "type": "string",
           "default": "source install/setup.sh",
@@ -111,6 +107,14 @@
                 },
                 "default": ["build", ".git"],
                 "description": "List of folders to exclude when syncing the workspace."
+        },
+        "fleet-coder.sourceCommands": {
+            "type": "array",
+            "items": {
+              "type": "string"
+          },
+          "default": ["source /opt/ros/humble/setup.bash", "source setup-ros2-discovery.sh"],
+          "description": "List of shell source commands to run before executing ROS-related commands. They will be executed in order."
         }
 
       }
