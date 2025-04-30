@@ -2,8 +2,36 @@
 
 Fleet Coder is a Visual Studio Code extension designed to simplify and streamline development workflows across multiple ROS-based robots or Linux machines in a fleet. With the click of a button, you can sync code, run builds, launch ROS nodes, and manage remote files seamlessly over SSH.
 
-Made with ❤️ for robotics developers managing the chaos of multi-robot systems.
+Made with ❤️ for robotics developers managing the chaos of multi-robot systems.<br/>
 
+## Install Notes
+
+**No supoort for Windows.**
+
+For Linux based systems, install sshpass using:
+
+Ubuntu
+```bash
+sudo apt install sshpass
+```
+Arch-based
+```bash
+sudo pacman -S sshpass
+```
+Fedora
+```bash
+sudo dnf install sshpass
+```
+
+For support on Mac
+```bash
+brew install hudochenkov/sshpass/sshpass
+```
+or
+
+```bash
+brew install sshpass
+```
 ## 🔧 Features
 
 - **Sync Workspace**  
