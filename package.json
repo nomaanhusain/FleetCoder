@@ -2,13 +2,13 @@
   "name": "fleet-coder",
   "displayName": "Fleet Coder",
   "description": "This extension allows you to copy code to multiple machines at the same time",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "icon": "fleet_coder_logo.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/nomaanhusain/FleetCoder.git"
   },
-  "license":"MIT",
+  "license": "MIT",
   "publisher": "codeEngineering",
   "engines": {
     "vscode": "^1.98.0"
@@ -52,7 +52,7 @@
         }
       ]
     },
-    "configuration":{
+    "configuration": {
       "title": "Fleet Coder Settings",
       "properties": {
         "fleet-coder.IPs": {
@@ -101,22 +101,27 @@
           "description": "Name of the package you want to launch. This lets you define the package for the launch file"
         },
         "fleet-coder.excludedFolders": {
-                "type": "array",
-                "items": {
-                    "type": "string"
-                },
-                "default": ["build", ".git"],
-                "description": "List of folders to exclude when syncing the workspace."
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "build",
+            ".git"
+          ],
+          "description": "List of folders to exclude when syncing the workspace."
         },
         "fleet-coder.sourceCommands": {
-            "type": "array",
-            "items": {
-              "type": "string"
+          "type": "array",
+          "items": {
+            "type": "string"
           },
-          "default": ["source /opt/ros/humble/setup.bash", "source setup-ros2-discovery.sh"],
+          "default": [
+            "source /opt/ros/humble/setup.bash",
+            "source setup-ros2-discovery.sh"
+          ],
           "description": "List of shell source commands to run before executing ROS-related commands. They will be executed in order."
         }
-
       }
     }
   },
