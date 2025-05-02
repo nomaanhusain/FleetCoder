@@ -238,7 +238,7 @@ function activate(context) {
         const workspaceRoot = workspaceFolders[0].uri.fsPath;
         const csvFile = config.get('IPs') || path.join(workspaceRoot, 'ips.csv');
         if (!fs.existsSync(csvFile)) {
-            vscode.window.showErrorMessage('IP CSV file not found! Add path to csv with IPs of remote devices in Fleet Coder Settings (\'Ctrl + ,\' search: Fleet Coder). Path: '+csvFile);
+            vscode.window.showErrorMessage('CSV file not found! Add path to csv with IPs of remote devices in Fleet Coder Settings (\'Ctrl + ,\' search: Fleet Coder)');
             return;
         }
         const ips = fs.readFileSync(csvFile, 'utf-8').split('\n').map(line => line.trim()).filter(line => line);
