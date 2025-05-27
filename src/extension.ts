@@ -248,7 +248,7 @@ export function activate(context: vscode.ExtensionContext) {
 					vscode.window.showErrorMessage(`Error syncing: ${stderr}`);
 					return;
 				}
-				vscode.window.showInformationMessage("Workspace synced successfully.");
+				vscode.window.showInformationMessage(`Workspace synced successfully on ${ip}`);
 			});
 		}
 
