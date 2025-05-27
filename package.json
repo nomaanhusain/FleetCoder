@@ -2,7 +2,7 @@
   "name": "fleet-coder",
   "displayName": "Fleet Coder",
   "description": "This extension allows you to copy code to multiple machines at the same time",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "icon": "fleet_coder_logo.png",
   "repository": {
     "type": "git",
