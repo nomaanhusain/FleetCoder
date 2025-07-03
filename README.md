@@ -1,6 +1,6 @@
 # Fleet Coder
 
-Fleet Coder is a Visual Studio Code extension designed to simplify and streamline development workflows across multiple ROS-based robots or Linux machines in a fleet. With the click of a button, you can sync code, run builds, launch ROS nodes, and manage remote files seamlessly over SSH.
+Fleet Coder is a Visual Studio Code extension designed to simplify and streamline development workflows across multiple ROS-based Linux machines. With the click of a button, you can sync code, run builds, launch ROS nodes, and manage remote files seamlessly over SSH.
 
 Made with ❤️ for robotics developers managing the chaos of multi-robot systems.<br/>
 
